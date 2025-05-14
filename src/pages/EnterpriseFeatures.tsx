@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { 
   Database, Building, Server, Warehouse, Factory, 
   Brain, Cpu, Network, LineChart, Lock, Zap,
-  BarChart3, PieChart, RocketLaunch 
+  BarChart3, PieChart, Rocket 
 } from 'lucide-react';
 import EnterpriseComparison from '@/components/compression/EnterpriseComparison';
 
@@ -95,7 +94,7 @@ const EnterpriseFeatures: React.FC = () => {
       <div className="container mx-auto py-12 px-4">
         <div className="text-center mb-16">
           <div className="flex justify-center mb-4">
-            <RocketLaunch className="h-20 w-20 text-purple-400" />
+            <Rocket className="h-20 w-20 text-purple-400" />
           </div>
           <h1 className="text-5xl font-bold mb-4">Nejpokročilejší komprese dat na světě</h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
