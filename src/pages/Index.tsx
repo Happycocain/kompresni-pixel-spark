@@ -58,8 +58,8 @@ const Index = () => {
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold">Advanced Compression Suite</h1>
-              <Badge variant="outline" className="ml-2 bg-purple-500 border-none px-2 py-0.5 text-xs">2025 Edition</Badge>
+              <h1 className="text-2xl font-bold">Pokročilá Kompresní Sada</h1>
+              <Badge variant="outline" className="ml-2 bg-purple-500 border-none px-2 py-0.5 text-xs">Edice 2025</Badge>
             </div>
           </div>
           <div className="flex space-x-4">
@@ -180,7 +180,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <span className="font-semibold text-lg">Advanced Compression Suite</span>
+              <span className="font-semibold text-lg">Pokročilá Kompresní Sada</span>
               <Badge variant="outline" className="ml-2">2025</Badge>
             </div>
             <div className="flex gap-6">
@@ -190,7 +190,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-white/10 mt-4 pt-4 text-center text-sm text-gray-400">
-            © 2025 Advanced Compression Suite. Vyvinuto s využitím nejmodernějších AI algoritmů.
+            © 2025 Pokročilá Kompresní Sada. Vyvinuto s využitím nejmodernějších AI algoritmů.
           </div>
         </div>
       </footer>

@@ -32,11 +32,11 @@ const CompressionTabs: React.FC<CompressionTabsProps> = ({
       <TabsList className="grid grid-cols-2 mb-4">
         <TabsTrigger value="interface" className="flex items-center gap-2">
           <Code2 className="h-4 w-4" />
-          Compression Tool
+          Kompresní nástroj
         </TabsTrigger>
         <TabsTrigger value="history" className="flex items-center gap-2">
           <History className="h-4 w-4" />
-          History
+          Historie
         </TabsTrigger>
       </TabsList>
       

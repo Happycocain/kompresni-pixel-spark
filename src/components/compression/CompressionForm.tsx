@@ -33,12 +33,12 @@ const CompressionForm: React.FC<CompressionFormProps> = ({
           {compressMode ? (
             <>
               <FastForward className="h-4 w-4" />
-              Compression Mode
+              Kompresní režim
             </>
           ) : (
             <>
               <RotateCcw className="h-4 w-4" />
-              Decompression Mode
+              Dekompresní režim
             </>
           )}
         </Button>
@@ -47,25 +47,25 @@ const CompressionForm: React.FC<CompressionFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">
-            {compressMode ? "Original Text" : "Compressed Text"}
+            {compressMode ? "Původní text" : "Komprimovaný text"}
           </label>
           <Textarea
             value={inputText}
             onChange={(e) => onInputChange(e.target.value)}
             placeholder={compressMode 
-              ? "Enter text to compress..." 
-              : "Enter compressed text to decompress..."
+              ? "Zadejte text ke kompresi..." 
+              : "Zadejte komprimovaný text k dekompresi..."
             }
             className="h-40 font-mono"
           />
           <div className="text-xs text-right">
-            {inputText.length} bytes
+            {inputText.length} bajtů
           </div>
         </div>
         
         <div className="space-y-2">
           <label className="text-sm font-medium">
-            {compressMode ? "Compressed Result" : "Decompressed Result"}
+            {compressMode ? "Komprimovaný výsledek" : "Dekomprimovaný výsledek"}
           </label>
           <Textarea
             value={outputText}
@@ -73,14 +73,14 @@ const CompressionForm: React.FC<CompressionFormProps> = ({
             className="h-40 bg-gray-950/50 font-mono"
           />
           <div className="text-xs text-right">
-            {outputText.length} bytes
+            {outputText.length} bajtů
           </div>
         </div>
       </div>
       
       <div className="flex justify-end">
         <Button onClick={onSave} disabled={!inputText || !outputText}>
-          Save Result
+          Uložit výsledek
         </Button>
       </div>
     </div>
