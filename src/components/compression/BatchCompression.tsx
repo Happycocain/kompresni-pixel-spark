@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { processBatch } from '@/api/compressionApi';
-import { FileUpload, FileX, Save } from 'lucide-react';
+import { Upload, FileX, Save } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 
 interface BatchFile {
@@ -175,7 +175,7 @@ const BatchCompression: React.FC = () => {
             onClick={() => fileInputRef.current?.click()}
             disabled={isProcessing}
           >
-            <FileUpload className="w-4 h-4 mr-2" />
+            <Upload className="w-4 h-4 mr-2" />
             Nahrát soubory
           </Button>
           <input
