@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -34,14 +33,24 @@ const BatchCompression: React.FC = () => {
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       
-      // Kontrola velikosti souboru (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      // Kontrola velikosti souboru (pro testování povolujeme až 100GB)
+      const maxSize = 100 * 1024 * 1024 * 1024; // 100GB v bajtech
+      if (file.size > maxSize) {
         toast({
           title: "Soubor je příliš velký",
-          description: `${file.name} překračuje maximální velikost 5MB`,
+          description: `${file.name} překračuje maximální velikost 100GB`,
           variant: "destructive",
         });
         continue;
+      }
+      
+      // Varování pro velmi velké soubory
+      if (file.size > 1 * 1024 * 1024 * 1024) { // 1GB
+        toast({
+          title: "Varování - velký soubor",
+          description: `${file.name} je větší než 1GB. Zpracování může trvat velmi dlouho.`,
+          variant: "warning",
+        });
       }
       
       const filePromise = new Promise<BatchFile>((resolve) => {
@@ -56,6 +65,36 @@ const BatchCompression: React.FC = () => {
             status: 'pending'
           });
         };
+        
+        // Pro velmi velké soubory zobrazíme info o průběhu načítání
+        reader.onprogress = (event) => {
+          if (event.lengthComputable && file.size > 50 * 1024 * 1024) { // 50MB
+            const percentLoaded = Math.round((event.loaded / event.total) * 100);
+            toast({
+              title: "Načítání souboru",
+              description: `${file.name}: ${percentLoaded}% načteno`,
+            });
+          }
+        };
+        
+        reader.onerror = () => {
+          toast({
+            title: "Chyba při načítání",
+            description: `Soubor ${file.name} se nepodařilo načíst`,
+            variant: "destructive",
+          });
+        };
+        
+        // Pro velmi velké soubory zobrazíme varování
+        if (file.size > 5 * 1024 * 1024) { // 5MB
+          toast({
+            title: "Načítání velkého souboru",
+            description: `Načítání souboru ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB) může trvat několik sekund`,
+          });
+        }
+        
+        // Zpracování velkých souborů po částech by vyžadovalo složitější implementaci
+        // Pro jednoduchost použijeme standardní načtení, ale v produkci by měl být implementován streaming
         reader.readAsText(file);
       });
       
@@ -165,6 +204,18 @@ const BatchCompression: React.FC = () => {
     });
   };
   
+  const formatFileSize = (sizeInBytes: number): string => {
+    if (sizeInBytes < 1024) {
+      return `${sizeInBytes} B`;
+    } else if (sizeInBytes < 1024 * 1024) {
+      return `${(sizeInBytes / 1024).toFixed(2)} KB`;
+    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+      return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+      return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+  };
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -184,7 +235,7 @@ const BatchCompression: React.FC = () => {
             onChange={handleFileChange}
             className="hidden"
             ref={fileInputRef}
-            accept=".txt,.json,.xml,.csv,text/plain,application/json,application/xml,text/csv"
+            accept="*/*" // Povolíme všechny typy souborů pro testování
           />
           
           <Button 
@@ -229,10 +280,10 @@ const BatchCompression: React.FC = () => {
               {files.map((file) => (
                 <tr key={file.id} className="border-t">
                   <td className="px-4 py-2">{file.name}</td>
-                  <td className="px-4 py-2 text-right">{(file.size / 1024).toFixed(2)} KB</td>
+                  <td className="px-4 py-2 text-right">{formatFileSize(file.size)}</td>
                   <td className="px-4 py-2 text-right">
                     {file.compressedSize 
-                      ? `${(file.compressedSize / 1024).toFixed(2)} KB` 
+                      ? formatFileSize(file.compressedSize)
                       : '-'}
                   </td>
                   <td className="px-4 py-2 text-right">
