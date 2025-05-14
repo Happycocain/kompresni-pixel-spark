@@ -49,7 +49,7 @@ const BatchCompression: React.FC = () => {
         toast({
           title: "Varování - velký soubor",
           description: `${file.name} je větší než 1GB. Zpracování může trvat velmi dlouho.`,
-          variant: "warning",
+          variant: "default",
         });
       }
       
