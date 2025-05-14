@@ -7,7 +7,7 @@ import CompressionProfiles from '@/components/compression/CompressionProfiles';
 import AdvancedVisualization from '@/components/compression/AdvancedVisualization';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { Code } from 'lucide-react';
+import { Code, Building } from 'lucide-react';
 
 // Typ pro kompresní profil
 interface CompressionProfile {
@@ -52,11 +52,17 @@ const Index = () => {
             <h1 className="text-2xl font-bold">Advanced Compression Suite</h1>
             <span className="bg-purple-500 px-2 py-0.5 rounded text-xs">Enterprise</span>
           </div>
-          <div>
+          <div className="flex space-x-4">
             <Button asChild variant="outline">
               <Link to="/api">
                 <Code className="h-4 w-4 mr-2" />
                 API Dokumentace
+              </Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link to="/enterprise">
+                <Building className="h-4 w-4 mr-2" />
+                Enterprise řešení
               </Link>
             </Button>
           </div>
