@@ -1,4 +1,3 @@
 
-import { useToast, toast } from "@/hooks/use-toast";
-
-export { useToast, toast };
+// Reexportujeme hooks/use-toast.ts
+export * from "@/hooks/use-toast";
