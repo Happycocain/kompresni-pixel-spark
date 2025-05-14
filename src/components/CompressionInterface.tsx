@@ -1,14 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { compressText, decompressText } from "@/utils/compressionAlgorithm";
 import CompressionVisualizer from "@/components/CompressionVisualizer";
-import CompressionHistory from "@/components/CompressionHistory";
 import { useToast } from "@/components/ui/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PanelBottomOpen, Code2, History, FastForward, RotateCcw } from 'lucide-react';
 import type { CompressionRecord } from "@/components/CompressionHistory";
+import CompressionHeader from './compression/CompressionHeader';
+import CompressionTabs from './compression/CompressionTabs';
 
 const CompressionInterface: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -45,6 +42,10 @@ const CompressionInterface: React.FC = () => {
       }
     }
   }, [inputText, compressMode]);
+  
+  const handleInputChange = (text: string) => {
+    setInputText(text);
+  };
   
   // Save to history
   const saveToHistory = () => {
@@ -100,94 +101,21 @@ const CompressionInterface: React.FC = () => {
   return (
     <div className="container mx-auto space-y-6 py-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <PanelBottomOpen className="h-6 w-6 text-teal-400" />
-          <h2 className="text-xl font-bold">Inovativní Kompresní Algoritmus</h2>
-        </div>
-        
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={toggleMode}
-          className="flex items-center gap-2"
-        >
-          {compressMode ? (
-            <>
-              <FastForward className="h-4 w-4" />
-              Compression Mode
-            </>
-          ) : (
-            <>
-              <RotateCcw className="h-4 w-4" />
-              Decompression Mode
-            </>
-          )}
-        </Button>
+        <CompressionHeader />
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <Tabs defaultValue="interface" className="w-full">
-            <TabsList className="grid grid-cols-2 mb-4">
-              <TabsTrigger value="interface" className="flex items-center gap-2">
-                <Code2 className="h-4 w-4" />
-                Compression Tool
-              </TabsTrigger>
-              <TabsTrigger value="history" className="flex items-center gap-2">
-                <History className="h-4 w-4" />
-                History
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="interface" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    {compressMode ? "Original Text" : "Compressed Text"}
-                  </label>
-                  <Textarea
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder={compressMode 
-                      ? "Enter text to compress..." 
-                      : "Enter compressed text to decompress..."
-                    }
-                    className="h-40 font-mono"
-                  />
-                  <div className="text-xs text-right">
-                    {inputText.length} bytes
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    {compressMode ? "Compressed Result" : "Decompressed Result"}
-                  </label>
-                  <Textarea
-                    value={outputText}
-                    readOnly
-                    className="h-40 bg-gray-950/50 font-mono"
-                  />
-                  <div className="text-xs text-right">
-                    {outputText.length} bytes
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-end">
-                <Button onClick={saveToHistory} disabled={!inputText || !outputText}>
-                  Save Result
-                </Button>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="history">
-              <CompressionHistory 
-                history={history} 
-                onSelect={loadFromHistory} 
-              />
-            </TabsContent>
-          </Tabs>
+          <CompressionTabs
+            inputText={inputText}
+            outputText={outputText}
+            compressMode={compressMode}
+            history={history}
+            onInputChange={handleInputChange}
+            onToggleMode={toggleMode}
+            onSave={saveToHistory}
+            onSelectFromHistory={loadFromHistory}
+          />
         </div>
         
         <div>
