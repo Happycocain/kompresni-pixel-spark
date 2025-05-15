@@ -10,16 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from 'react-router-dom';
 import { Code, Building, Brain, Sparkles, Gauge, Trophy } from 'lucide-react';
-
-// Typ pro kompresní profil
-interface CompressionProfile {
-  id: string;
-  name: string;
-  description?: string;
-  patterns: Record<string, string>;
-  created: number;
-  lastModified: number;
-}
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTranslation } from '@/i18n/translations';
+import SettingsPanel from '@/components/app/SettingsPanel';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("compression");
@@ -31,7 +24,10 @@ const Index = () => {
     history: []
   });
   
-  // Simulace historie kompresí pro testování grafu
+  const { language } = useSettings();
+  const { t } = useTranslation(language);
+  
+  // Demo data for visualization
   const demoHistory = [
     { originalSize: 1000, compressedSize: 650, ratio: 35, timestamp: Date.now() - 50000 },
     { originalSize: 1200, compressedSize: 720, ratio: 40, timestamp: Date.now() - 40000 },
@@ -40,39 +36,39 @@ const Index = () => {
     { originalSize: 2000, compressedSize: 1200, ratio: 40, timestamp: Date.now() - 10000 },
   ];
   
-  // Zpracování výběru profilu
-  const handleSelectProfile = (profile: CompressionProfile) => {
+  // Handle profile selection
+  const handleSelectProfile = (profile: any) => {
     console.log("Vybrán profil:", profile);
-    // Tady by se implementovala logika pro použití profilu
   };
   
-  // Zpracování výběru oborového profilu
+  // Handle industry profile selection
   const handleSelectIndustryProfile = (profileId: string) => {
     console.log("Vybrán oborový profil:", profileId);
-    // Tady by se implementovala logika pro použití oborového profilu
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white dark:from-slate-950 dark:via-purple-950 dark:to-slate-950">
       <header className="border-b border-white/10">
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold">Pokročilá Kompresní Sada</h1>
-              <Badge variant="outline" className="ml-2 bg-purple-500 border-none px-2 py-0.5 text-xs">Edice 2025</Badge>
+              <h1 className="text-2xl font-bold">{t('appName')}</h1>
+              <Badge variant="outline" className="ml-2 bg-purple-500 border-none px-2 py-0.5 text-xs">{t('edition')}</Badge>
             </div>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 items-center">
+            <SettingsPanel />
+            
             <Button asChild variant="outline">
               <Link to="/api">
                 <Code className="h-4 w-4 mr-2" />
-                API Dokumentace
+                {t('apiDocs')}
               </Link>
             </Button>
             <Button asChild variant="secondary">
               <Link to="/enterprise">
                 <Building className="h-4 w-4 mr-2" />
-                Enterprise řešení
+                {t('enterpriseSolution')}
               </Link>
             </Button>
           </div>
@@ -83,41 +79,40 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-2/3 mb-6 md:mb-0 md:pr-8">
-              <Badge className="mb-2 bg-purple-600/80">Novinka</Badge>
+              <Badge className="mb-2 bg-purple-600/80">{t('newFeature')}</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Představujeme AI-řízenou kompresi nové generace
+                {t('aiHeadline')}
               </h2>
               <p className="text-lg text-gray-300 mb-6">
-                Nejpokročilejší kompresní algoritmy poháněné umělou inteligencí nyní dokáží zmenšit vaše soubory až o 40% efektivněji. 
-                Podporujeme soubory až do velikosti 5TB.
+                {t('aiDescription')}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
                   <Brain className="text-purple-400 h-5 w-5" />
-                  <span>Adaptivní algoritmy</span>
+                  <span>{t('features.adaptiveAlgorithms')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Sparkles className="text-purple-400 h-5 w-5" />
-                  <span>Maximální efektivita</span>
+                  <span>{t('features.maxEfficiency')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gauge className="text-purple-400 h-5 w-5" />
-                  <span>Pokročilá analýza</span>
+                  <span>{t('features.advancedAnalysis')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Trophy className="text-purple-400 h-5 w-5" />
-                  <span>Světová špička</span>
+                  <span>{t('features.worldClass')}</span>
                 </div>
               </div>
             </div>
             <div className="md:w-1/3">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                <h3 className="font-medium text-lg mb-2">Vyzkoušejte rozdíl</h3>
+                <h3 className="font-medium text-lg mb-2">{t('tryDifference')}</h3>
                 <p className="text-sm text-gray-300 mb-4">
-                  Naše nová AI-řízená komprese dosahuje o 35% lepších výsledků než tradiční algoritmy.
+                  {t('tryDifferenceDesc')}
                 </p>
                 <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" onClick={() => setActiveTab("compression")}>
-                  Vyzkoušet kompresní nástroj
+                  {t('tryCompressionTool')}
                 </Button>
               </div>
             </div>
@@ -128,11 +123,11 @@ const Index = () => {
       <div className="container mx-auto py-8 px-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full max-w-4xl mx-auto">
-            <TabsTrigger value="compression">Komprese textu</TabsTrigger>
-            <TabsTrigger value="batch">Dávkové zpracování</TabsTrigger>
-            <TabsTrigger value="profiles">Kompresní profily</TabsTrigger>
-            <TabsTrigger value="industry">Oborové profily</TabsTrigger>
-            <TabsTrigger value="analytics">Pokročilé analýzy</TabsTrigger>
+            <TabsTrigger value="compression">{t('tabs.compression')}</TabsTrigger>
+            <TabsTrigger value="batch">{t('tabs.batch')}</TabsTrigger>
+            <TabsTrigger value="profiles">{t('tabs.profiles')}</TabsTrigger>
+            <TabsTrigger value="industry">{t('tabs.industry')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('tabs.analytics')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="compression" className="space-y-6">
@@ -180,7 +175,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <span className="font-semibold text-lg">Pokročilá Kompresní Sada</span>
+              <span className="font-semibold text-lg">{t('appName')}</span>
               <Badge variant="outline" className="ml-2">2025</Badge>
             </div>
             <div className="flex gap-6">
@@ -190,7 +185,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-white/10 mt-4 pt-4 text-center text-sm text-gray-400">
-            © 2025 Pokročilá Kompresní Sada. Vyvinuto s využitím nejmodernějších AI algoritmů.
+            {t('footer.rights')}
           </div>
         </div>
       </footer>

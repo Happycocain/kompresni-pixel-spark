@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { compressText, decompressText } from "@/utils/compressionAlgorithm";
 import { aiCompressText } from "@/utils/aiEnhancedCompression";
 import CompressionVisualizer from "@/components/CompressionVisualizer";
+import ExtendedVisualization from "@/components/compression/ExtendedVisualization";
 import CompressionInsights from "@/components/compression/CompressionInsights";
 import { useToast } from "@/components/ui/use-toast";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +11,12 @@ import { Label } from "@/components/ui/label";
 import type { CompressionRecord } from "@/components/CompressionHistory";
 import CompressionHeader from './compression/CompressionHeader';
 import CompressionTabs from './compression/CompressionTabs';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTranslation } from '@/i18n/translations';
+import HistoryExporter from './compression/HistoryExporter';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UserProfileManager from './compression/UserProfileManager';
+import { ChartLine, BarChart } from "lucide-react";
 
 const CompressionInterface: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -23,8 +30,20 @@ const CompressionInterface: React.FC = () => {
     steps: any[];
     insights?: any;
   }>({ ratio: 0, steps: [] });
-  const [history, setHistory] = useState<CompressionRecord[]>([]);
+  const [history, setHistory] = useState<CompressionRecord[]>(() => {
+    const savedHistory = localStorage.getItem('compressionHistory');
+    return savedHistory ? JSON.parse(savedHistory) : [];
+  });
+  const [visualizationMode, setVisualizationMode] = useState<'basic' | 'extended'>('basic');
+  
+  const { language } = useSettings();
+  const { t } = useTranslation(language);
   const { toast } = useToast();
+  
+  // Save history to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('compressionHistory', JSON.stringify(history));
+  }, [history]);
   
   // Process text when input changes or mode changes
   useEffect(() => {
@@ -129,6 +148,19 @@ const CompressionInterface: React.FC = () => {
     });
   };
   
+  // Import history
+  const handleImportHistory = (importedHistory: CompressionRecord[]) => {
+    setHistory([...history, ...importedHistory]);
+  };
+  
+  // Handle custom profile selection
+  const handleSelectProfile = (profile: any) => {
+    toast({
+      title: `${profile.name} profile selected`,
+      description: `Using custom compression profile with ${Object.keys(profile.patterns).length} patterns`,
+    });
+  };
+  
   return (
     <div className="container mx-auto space-y-6 py-6">
       <div className="flex items-center justify-between">
@@ -141,7 +173,7 @@ const CompressionInterface: React.FC = () => {
               onCheckedChange={setUseAI}
             />
             <Label htmlFor="ai-mode" className="cursor-pointer flex items-center gap-1">
-              <span className={useAI ? "text-purple-400" : "text-gray-400"}>AI Compression</span>
+              <span className={useAI ? "text-purple-400" : "text-gray-400"}>{t('aiCompression')}</span>
               {useAI && (
                 <span className="bg-purple-500/20 text-purple-200 text-xs px-1.5 py-0.5 rounded">PRO</span>
               )}
@@ -150,7 +182,7 @@ const CompressionInterface: React.FC = () => {
           
           {useAI && selectedIndustry && (
             <span className="bg-purple-700/30 border border-purple-500/30 text-purple-300 text-xs px-2 py-1 rounded-full flex items-center">
-              {selectedIndustry.charAt(0).toUpperCase() + selectedIndustry.slice(1)} profile
+              {selectedIndustry.charAt(0).toUpperCase() + selectedIndustry.slice(1)} {t('profile')}
               <button 
                 className="ml-2 text-purple-400 hover:text-purple-200"
                 onClick={() => handleSelectIndustry(null)}
@@ -159,6 +191,11 @@ const CompressionInterface: React.FC = () => {
               </button>
             </span>
           )}
+          
+          <HistoryExporter 
+            history={history}
+            onImport={handleImportHistory}
+          />
         </div>
       </div>
       
@@ -190,17 +227,47 @@ const CompressionInterface: React.FC = () => {
           )}
         </div>
         
-        <div>
-          <CompressionVisualizer
-            originalSize={compressMode ? inputText.length : outputText.length}
-            compressedSize={compressMode ? outputText.length : inputText.length}
-            ratio={compressResult.ratio}
-            steps={compressResult.steps}
-          />
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <Tabs value={visualizationMode} onValueChange={(v) => setVisualizationMode(v as 'basic' | 'extended')}>
+              <TabsList className="mb-2">
+                <TabsTrigger value="basic" className="flex items-center gap-1">
+                  <BarChart className="h-3 w-3" />
+                  Basic
+                </TabsTrigger>
+                <TabsTrigger value="extended" className="flex items-center gap-1">
+                  <ChartLine className="h-3 w-3" />
+                  Extended
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+          
+          {visualizationMode === 'basic' ? (
+            <CompressionVisualizer
+              originalSize={compressMode ? inputText.length : outputText.length}
+              compressedSize={compressMode ? outputText.length : inputText.length}
+              ratio={compressResult.ratio}
+              steps={compressResult.steps}
+            />
+          ) : (
+            <ExtendedVisualization
+              originalSize={compressMode ? inputText.length : outputText.length}
+              compressedSize={compressMode ? outputText.length : inputText.length}
+              ratio={compressResult.ratio}
+              steps={compressResult.steps}
+              history={history.map(record => ({
+                originalSize: record.originalSize,
+                compressedSize: record.compressedSize,
+                ratio: record.ratio,
+                timestamp: record.timestamp
+              }))}
+            />
+          )}
           
           {useAI && (
             <div className="mt-4">
-              <div className="text-sm font-medium mb-2">Select Industry Profile:</div>
+              <div className="text-sm font-medium mb-2">{t('selectIndustryProfile')}:</div>
               <div className="grid grid-cols-2 gap-2">
                 {["medical", "finance", "tech", "legal"].map((industry) => (
                   <button
@@ -212,12 +279,15 @@ const CompressionInterface: React.FC = () => {
                     }`}
                     onClick={() => handleSelectIndustry(industry)}
                   >
-                    {industry.charAt(0).toUpperCase() + industry.slice(1)}
+                    {t(industry)}
                   </button>
                 ))}
               </div>
             </div>
           )}
+          
+          {/* User profile manager */}
+          <UserProfileManager onSelectProfile={handleSelectProfile} />
         </div>
       </div>
     </div>
