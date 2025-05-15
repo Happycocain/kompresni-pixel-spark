@@ -1,4 +1,3 @@
-
 import { useCallback } from "react";
 
 type TranslationKey = 
@@ -65,7 +64,25 @@ type TranslationKey =
   | "algorithmInput"
   | "enterAlgorithmParameters"
   | "fileTypeChanged"
-  | "selectedFileType";
+  | "selectedFileType"
+  | "settings"
+  | "theme"
+  | "language"
+  | "czech"
+  | "english"
+  | "original"
+  | "compressed"
+  | "compressionMetrics"
+  | "exportHistory"
+  | "importHistory"
+  | "customProfiles"
+  | "newProfile"
+  | "editProfile"
+  | "createProfile"
+  | "profileName"
+  | "profileDescription"
+  | "cancel"
+  | "save";
 
 type Translations = {
   [key in TranslationKey]: {
@@ -263,10 +280,6 @@ const translations: Translations = {
     en: "Extended",
     cs: "Rozšířené"
   },
-  "selectIndustryProfile": {
-    en: "Select Industry Profile",
-    cs: "Vyberte oborový profil"
-  },
   "medical": {
     en: "Medical",
     cs: "Medicína"
@@ -282,6 +295,10 @@ const translations: Translations = {
   "legal": {
     en: "Legal",
     cs: "Právní"
+  },
+  "selectIndustryProfile": {
+    en: "Select Industry Profile",
+    cs: "Vyberte oborový profil"
   },
   "footer.rights": {
     en: "All rights reserved. Advanced compression algorithms protected by patents.",
@@ -330,6 +347,78 @@ const translations: Translations = {
   "selectedFileType": {
     en: "Selected file type",
     cs: "Vybraný typ souboru"
+  },
+  "settings": {
+    en: "Settings",
+    cs: "Nastavení"
+  },
+  "theme": {
+    en: "Theme",
+    cs: "Motiv"
+  },
+  "language": {
+    en: "Language",
+    cs: "Jazyk"
+  },
+  "czech": {
+    en: "Czech",
+    cs: "Čeština"
+  },
+  "english": {
+    en: "English",
+    cs: "Angličtina"
+  },
+  "original": {
+    en: "Original",
+    cs: "Původní"
+  },
+  "compressed": {
+    en: "Compressed",
+    cs: "Komprimováno"
+  },
+  "compressionMetrics": {
+    en: "Compression Metrics",
+    cs: "Kompresní metriky"
+  },
+  "exportHistory": {
+    en: "Export History",
+    cs: "Exportovat historii"
+  },
+  "importHistory": {
+    en: "Import History",
+    cs: "Importovat historii"
+  },
+  "customProfiles": {
+    en: "Custom Profiles",
+    cs: "Vlastní profily"
+  },
+  "newProfile": {
+    en: "New Profile",
+    cs: "Nový profil"
+  },
+  "editProfile": {
+    en: "Edit Profile",
+    cs: "Upravit profil"
+  },
+  "createProfile": {
+    en: "Create Profile",
+    cs: "Vytvořit profil"
+  },
+  "profileName": {
+    en: "Profile Name",
+    cs: "Název profilu"
+  },
+  "profileDescription": {
+    en: "Profile Description",
+    cs: "Popis profilu"
+  },
+  "cancel": {
+    en: "Cancel",
+    cs: "Zrušit"
+  },
+  "save": {
+    en: "Save",
+    cs: "Uložit"
   }
 };
 

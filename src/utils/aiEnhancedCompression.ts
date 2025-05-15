@@ -1,6 +1,5 @@
 
 import { compressText } from './compressionAlgorithm';
-import { formatSpecificCompression } from './formatSpecificCompression';
 import type { FileType } from '../components/compression/FileTypeSelector';
 
 interface AICompressionOptions {

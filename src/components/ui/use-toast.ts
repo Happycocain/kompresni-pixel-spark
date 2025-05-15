@@ -1,3 +1,3 @@
 
-// Reexportujeme hooks/use-toast.ts
+// Reexport hooks/use-toast.ts
 export * from "@/hooks/use-toast";

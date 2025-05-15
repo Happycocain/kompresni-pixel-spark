@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import {
 import { FileType } from './compression/FileTypeSelector';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTranslation } from '@/i18n/translations';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 export interface CompressionRecord {
   id: string;
