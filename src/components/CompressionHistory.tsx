@@ -1,6 +1,17 @@
-
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { FileType } from './compression/FileTypeSelector';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTranslation } from '@/i18n/translations';
 
 export interface CompressionRecord {
   id: string;
@@ -10,6 +21,8 @@ export interface CompressionRecord {
   compressedSize: number;
   ratio: number;
   timestamp: number;
+  fileType?: FileType;
+  algorithmInput?: string;
 }
 
 interface CompressionHistoryProps {

@@ -1,197 +1,348 @@
 
-export const translations = {
-  cs: {
-    appName: 'Pokročilá Kompresní Sada',
-    edition: 'Edice 2025',
-    apiDocs: 'API Dokumentace',
-    enterpriseSolution: 'Enterprise řešení',
-    newFeature: 'Novinka',
-    aiHeadline: 'Představujeme AI-řízenou kompresi nové generace',
-    aiDescription: 'Nejpokročilejší kompresní algoritmy poháněné umělou inteligencí nyní dokáží zmenšit vaše soubory až o 40% efektivněji. Podporujeme soubory až do velikosti 5TB.',
-    features: {
-      adaptiveAlgorithms: 'Adaptivní algoritmy',
-      maxEfficiency: 'Maximální efektivita',
-      advancedAnalysis: 'Pokročilá analýza',
-      worldClass: 'Světová špička'
-    },
-    tryDifference: 'Vyzkoušejte rozdíl',
-    tryDifferenceDesc: 'Naše nová AI-řízená komprese dosahuje o 35% lepších výsledků než tradiční algoritmy.',
-    tryCompressionTool: 'Vyzkoušet kompresní nástroj',
-    tabs: {
-      compression: 'Komprese textu',
-      batch: 'Dávkové zpracování',
-      profiles: 'Kompresní profily',
-      industry: 'Oborové profily',
-      analytics: 'Pokročilé analýzy'
-    },
-    compressionTool: 'Kompresní nástroj',
-    history: 'Historie',
-    compressionMode: 'Kompresní režim',
-    decompressionMode: 'Dekompresní režim',
-    originalText: 'Původní text',
-    compressedText: 'Komprimovaný text',
-    compressedResult: 'Komprimovaný výsledek',
-    decompressedResult: 'Dekomprimovaný výsledek',
-    bytes: 'bajtů',
-    saveResult: 'Uložit výsledek',
-    compressionMetrics: 'Kompresní metriky',
-    original: 'Původní',
-    compressed: 'Komprimované',
-    smaller: 'menší',
-    larger: 'větší',
-    compressionProcess: 'Kompresní proces:',
-    before: 'Před:',
-    after: 'Po:',
-    aiCompression: 'AI Komprese',
-    selectIndustryProfile: 'Vybrat oborový profil:',
-    medical: 'Medicína',
-    finance: 'Finance',
-    tech: 'Technologie',
-    legal: 'Právo',
-    profile: 'profil',
-    generalProfile: 'Obecný profil',
-    noHistory: 'Zatím žádná historie kompresí',
-    actions: 'Akce',
-    settings: 'Nastavení',
-    theme: 'Téma',
-    language: 'Jazyk',
-    dark: 'Tmavé',
-    light: 'Světlé',
-    czech: 'Čeština',
-    english: 'Angličtina',
-    exportHistory: 'Exportovat historii',
-    importHistory: 'Importovat historii',
-    uploadFiles: 'Nahrát soubory',
-    processFiles: 'Zpracovat soubory',
-    downloadAll: 'Stáhnout vše',
-    fileName: 'Název souboru',
-    originalSize: 'Původní velikost',
-    compressedSize: 'Komprimovaná velikost',
-    compressionRatio: 'Kompresní poměr',
-    status: 'Stav',
-    pending: 'Čeká',
-    processing: 'Zpracovává se',
-    completed: 'Hotovo',
-    error: 'Chyba',
-    wait: 'Čeká',
-    supportInfo: 'Podporujeme kompresní algoritmy optimalizované pro data velkých společností',
-    createProfile: 'Vytvořit profil',
-    deleteProfile: 'Smazat profil',
-    editProfile: 'Upravit profil',
-    profileName: 'Název profilu',
-    profileDescription: 'Popis profilu',
-    save: 'Uložit',
-    cancel: 'Zrušit',
-    footer: {
-      rights: '© 2025 Pokročilá Kompresní Sada. Vyvinuto s využitím nejmodernějších AI algoritmů.'
-    },
-    customProfiles: 'Vlastní profily',
-    newProfile: 'Nový profil',
+import { useCallback } from "react";
+
+type TranslationKey = 
+  | "appName"
+  | "edition"
+  | "apiDocs"
+  | "enterpriseSolution"
+  | "newFeature"
+  | "aiHeadline"
+  | "aiDescription"
+  | "features.adaptiveAlgorithms"
+  | "features.maxEfficiency"
+  | "features.advancedAnalysis"
+  | "features.worldClass"
+  | "tryDifference"
+  | "tryDifferenceDesc"
+  | "tryCompressionTool"
+  | "tabs.compression"
+  | "tabs.batch"
+  | "tabs.profiles"
+  | "tabs.industry"
+  | "tabs.analytics"
+  | "compressionMode"
+  | "decompressionMode"
+  | "originalText"
+  | "compressedText"
+  | "enterTextToCompress"
+  | "enterTextToDecompress"
+  | "compressedResult"
+  | "decompressedResult"
+  | "bytes"
+  | "saveResult"
+  | "compressionTool"
+  | "history"
+  | "aiCompression"
+  | "profile"
+  | "compressionSavedToHistory"
+  | "achieved"
+  | "compressionRatio"
+  | "loadedFromHistory"
+  | "textLoadedFromHistory"
+  | "profileActivated"
+  | "generalProfileActivated"
+  | "compressionOptimizedForIndustry"
+  | "usingGeneralCompression"
+  | "profileSelected"
+  | "usingCustomProfile"
+  | "patterns"
+  | "basic"
+  | "extended"
+  | "medical"
+  | "finance"
+  | "tech"
+  | "legal"
+  | "selectIndustryProfile"
+  | "footer.rights"
+  | "fileType"
+  | "selectFileType"
+  | "fileTypes.text"
+  | "fileTypes.image"
+  | "fileTypes.video"
+  | "fileTypes.document"
+  | "fileTypes.generic"
+  | "algorithmInput"
+  | "enterAlgorithmParameters"
+  | "fileTypeChanged"
+  | "selectedFileType";
+
+type Translations = {
+  [key in TranslationKey]: {
+    en: string;
+    cs: string;
+  };
+};
+
+const translations: Translations = {
+  "appName": {
+    en: "Data Compression Studio",
+    cs: "Datové Komprešní Studio"
   },
-  en: {
-    appName: 'Advanced Compression Suite',
-    edition: '2025 Edition',
-    apiDocs: 'API Documentation',
-    enterpriseSolution: 'Enterprise Solution',
-    newFeature: 'New',
-    aiHeadline: 'Introducing AI-driven compression of the new generation',
-    aiDescription: 'Our most advanced compression algorithms powered by artificial intelligence can now reduce your files by up to 40% more efficiently. We support files up to 5TB in size.',
-    features: {
-      adaptiveAlgorithms: 'Adaptive Algorithms',
-      maxEfficiency: 'Maximum Efficiency',
-      advancedAnalysis: 'Advanced Analysis',
-      worldClass: 'World-Class'
-    },
-    tryDifference: 'Try the difference',
-    tryDifferenceDesc: 'Our new AI-driven compression achieves 35% better results than traditional algorithms.',
-    tryCompressionTool: 'Try compression tool',
-    tabs: {
-      compression: 'Text Compression',
-      batch: 'Batch Processing',
-      profiles: 'Compression Profiles',
-      industry: 'Industry Profiles',
-      analytics: 'Advanced Analytics'
-    },
-    compressionTool: 'Compression Tool',
-    history: 'History',
-    compressionMode: 'Compression Mode',
-    decompressionMode: 'Decompression Mode',
-    originalText: 'Original Text',
-    compressedText: 'Compressed Text',
-    compressedResult: 'Compressed Result',
-    decompressedResult: 'Decompressed Result',
-    bytes: 'bytes',
-    saveResult: 'Save Result',
-    compressionMetrics: 'Compression Metrics',
-    original: 'Original',
-    compressed: 'Compressed',
-    smaller: 'smaller',
-    larger: 'larger',
-    compressionProcess: 'Compression Process:',
-    before: 'Before:',
-    after: 'After:',
-    aiCompression: 'AI Compression',
-    selectIndustryProfile: 'Select Industry Profile:',
-    medical: 'Medical',
-    finance: 'Finance',
-    tech: 'Technology',
-    legal: 'Legal',
-    profile: 'profile',
-    generalProfile: 'General Profile',
-    noHistory: 'No compression history yet',
-    actions: 'Actions',
-    settings: 'Settings',
-    theme: 'Theme',
-    language: 'Language',
-    dark: 'Dark',
-    light: 'Light',
-    czech: 'Czech',
-    english: 'English',
-    exportHistory: 'Export History',
-    importHistory: 'Import History',
-    uploadFiles: 'Upload Files',
-    processFiles: 'Process Files',
-    downloadAll: 'Download All',
-    fileName: 'File Name',
-    originalSize: 'Original Size',
-    compressedSize: 'Compressed Size',
-    compressionRatio: 'Compression Ratio',
-    status: 'Status',
-    pending: 'Pending',
-    processing: 'Processing',
-    completed: 'Completed',
-    error: 'Error',
-    wait: 'Wait',
-    supportInfo: 'We support compression algorithms optimized for enterprise-scale data',
-    createProfile: 'Create Profile',
-    deleteProfile: 'Delete Profile',
-    editProfile: 'Edit Profile',
-    profileName: 'Profile Name',
-    profileDescription: 'Profile Description',
-    save: 'Save',
-    cancel: 'Cancel',
-    footer: {
-      rights: '© 2025 Advanced Compression Suite. Developed using state-of-the-art AI algorithms.'
-    },
-    customProfiles: 'Custom Profiles',
-    newProfile: 'New Profile',
+  "edition": {
+    en: "PRO Edition",
+    cs: "PRO Edice"
+  },
+  "apiDocs": {
+    en: "API Documentation",
+    cs: "API Dokumentace"
+  },
+  "enterpriseSolution": {
+    en: "Enterprise Solution",
+    cs: "Firemní řešení"
+  },
+  "newFeature": {
+    en: "NEW",
+    cs: "NOVINKA"
+  },
+  "aiHeadline": {
+    en: "AI-Powered Compression that Understands Your Data",
+    cs: "AI komprese, která rozumí vašim datům"
+  },
+  "aiDescription": {
+    en: "Our state-of-the-art AI compression algorithms adapt to your specific data patterns, achieving compression ratios unmatched by traditional methods.",
+    cs: "Naše nejmodernější AI kompresní algoritmy se přizpůsobují vašim specifickým datovým vzorům a dosahují kompresních poměrů, které tradiční metody nemohou překonat."
+  },
+  "features.adaptiveAlgorithms": {
+    en: "Adaptive Algorithms",
+    cs: "Adaptivní algoritmy"
+  },
+  "features.maxEfficiency": {
+    en: "Maximum Efficiency",
+    cs: "Maximální efektivita"
+  },
+  "features.advancedAnalysis": {
+    en: "Advanced Analysis",
+    cs: "Pokročilá analýza"
+  },
+  "features.worldClass": {
+    en: "World-Class Compression",
+    cs: "Světová komprese"
+  },
+  "tryDifference": {
+    en: "Try the difference",
+    cs: "Vyzkoušejte rozdíl"
+  },
+  "tryDifferenceDesc": {
+    en: "See how our AI compression outperforms traditional algorithms",
+    cs: "Podívejte se, jak naše AI komprese překonává tradiční algoritmy"
+  },
+  "tryCompressionTool": {
+    en: "Try Compression Tool",
+    cs: "Vyzkoušet kompresní nástroj"
+  },
+  "tabs.compression": {
+    en: "Compression Tool",
+    cs: "Kompresní nástroj"
+  },
+  "tabs.batch": {
+    en: "Batch Processing",
+    cs: "Dávkové zpracování"
+  },
+  "tabs.profiles": {
+    en: "Compression Profiles",
+    cs: "Kompresní profily"
+  },
+  "tabs.industry": {
+    en: "Industry Solutions",
+    cs: "Oborová řešení"
+  },
+  "tabs.analytics": {
+    en: "Analytics",
+    cs: "Analytika"
+  },
+  "compressionMode": {
+    en: "Compression Mode",
+    cs: "Kompresní režim"
+  },
+  "decompressionMode": {
+    en: "Decompression Mode",
+    cs: "Dekompresní režim"
+  },
+  "originalText": {
+    en: "Original Text",
+    cs: "Původní text"
+  },
+  "compressedText": {
+    en: "Compressed Text",
+    cs: "Komprimovaný text"
+  },
+  "enterTextToCompress": {
+    en: "Enter text to compress...",
+    cs: "Zadejte text ke kompresi..."
+  },
+  "enterTextToDecompress": {
+    en: "Enter compressed text to decompress...",
+    cs: "Zadejte komprimovaný text k dekompresi..."
+  },
+  "compressedResult": {
+    en: "Compressed Result",
+    cs: "Komprimovaný výsledek"
+  },
+  "decompressedResult": {
+    en: "Decompressed Result",
+    cs: "Dekomprimovaný výsledek"
+  },
+  "bytes": {
+    en: "bytes",
+    cs: "bajtů"
+  },
+  "saveResult": {
+    en: "Save Result",
+    cs: "Uložit výsledek"
+  },
+  "compressionTool": {
+    en: "Compression Tool",
+    cs: "Kompresní nástroj"
+  },
+  "history": {
+    en: "History",
+    cs: "Historie"
+  },
+  "aiCompression": {
+    en: "AI Compression",
+    cs: "AI komprese"
+  },
+  "profile": {
+    en: "profile",
+    cs: "profil"
+  },
+  "compressionSavedToHistory": {
+    en: "Compression saved to history",
+    cs: "Komprese uložena do historie"
+  },
+  "achieved": {
+    en: "Achieved",
+    cs: "Dosaženo"
+  },
+  "compressionRatio": {
+    en: "compression ratio",
+    cs: "kompresního poměru"
+  },
+  "loadedFromHistory": {
+    en: "Loaded from history",
+    cs: "Načteno z historie"
+  },
+  "textLoadedFromHistory": {
+    en: "Text loaded from history record",
+    cs: "Text načten ze záznamu historie"
+  },
+  "profileActivated": {
+    en: "profile activated",
+    cs: "profil aktivován"
+  },
+  "generalProfileActivated": {
+    en: "General profile activated",
+    cs: "Obecný profil aktivován"
+  },
+  "compressionOptimizedForIndustry": {
+    en: "Compression optimized for your industry",
+    cs: "Komprese optimalizovaná pro váš obor"
+  },
+  "usingGeneralCompression": {
+    en: "Using general compression",
+    cs: "Používá se obecná komprese"
+  },
+  "profileSelected": {
+    en: "profile selected",
+    cs: "profil vybrán"
+  },
+  "usingCustomProfile": {
+    en: "Using custom compression profile with",
+    cs: "Používá se vlastní kompresní profil s"
+  },
+  "patterns": {
+    en: "patterns",
+    cs: "vzory"
+  },
+  "basic": {
+    en: "Basic",
+    cs: "Základní"
+  },
+  "extended": {
+    en: "Extended",
+    cs: "Rozšířené"
+  },
+  "selectIndustryProfile": {
+    en: "Select Industry Profile",
+    cs: "Vyberte oborový profil"
+  },
+  "medical": {
+    en: "Medical",
+    cs: "Medicína"
+  },
+  "finance": {
+    en: "Finance",
+    cs: "Finance"
+  },
+  "tech": {
+    en: "Technology",
+    cs: "Technologie"
+  },
+  "legal": {
+    en: "Legal",
+    cs: "Právní"
+  },
+  "footer.rights": {
+    en: "All rights reserved. Advanced compression algorithms protected by patents.",
+    cs: "Všechna práva vyhrazena. Pokročilé kompresní algoritmy jsou chráněny patenty."
+  },
+  "fileType": {
+    en: "File Type",
+    cs: "Typ souboru"
+  },
+  "selectFileType": {
+    en: "Select file type",
+    cs: "Vyberte typ souboru"
+  },
+  "fileTypes.text": {
+    en: "Text",
+    cs: "Text"
+  },
+  "fileTypes.image": {
+    en: "Image",
+    cs: "Obrázek"
+  },
+  "fileTypes.video": {
+    en: "Video",
+    cs: "Video"
+  },
+  "fileTypes.document": {
+    en: "Document",
+    cs: "Dokument"
+  },
+  "fileTypes.generic": {
+    en: "Generic File",
+    cs: "Obecný soubor"
+  },
+  "algorithmInput": {
+    en: "Algorithm Parameters",
+    cs: "Parametry algoritmu"
+  },
+  "enterAlgorithmParameters": {
+    en: "Enter algorithm parameters...",
+    cs: "Zadejte parametry algoritmu..."
+  },
+  "fileTypeChanged": {
+    en: "File type changed",
+    cs: "Typ souboru změněn"
+  },
+  "selectedFileType": {
+    en: "Selected file type",
+    cs: "Vybraný typ souboru"
   }
 };
 
-export type TranslationKey = keyof typeof translations.en;
-
-export const useTranslation = (language: 'cs' | 'en') => {
-  return {
-    t: (key: string) => {
-      const keys = key.split('.');
-      let translation: any = translations[language];
-      
-      for (const k of keys) {
-        translation = translation?.[k];
-        if (translation === undefined) return key;
-      }
-      
-      return translation || key;
+export function useTranslation(language: string) {
+  const t = useCallback((key: TranslationKey): string => {
+    const translationObj = translations[key];
+    if (!translationObj) {
+      console.warn(`Translation key not found: ${key}`);
+      return key;
     }
-  };
-};
+    
+    return translationObj[language as keyof typeof translationObj] || translationObj.en;
+  }, [language]);
+
+  return { t };
+}

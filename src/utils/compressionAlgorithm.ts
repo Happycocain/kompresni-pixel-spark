@@ -1,220 +1,123 @@
 
-/**
- * Advanced hybrid compression algorithm implementation
- * 
- * This implementation combines multiple approaches:
- * 1. Run-length encoding for repeated characters
- * 2. Dictionary-based compression for common patterns
- * 3. Bit-level optimization for specific character sets
- * 4. Adaptive statistical modeling for frequency analysis
- * 5. Pattern recognition with machine learning simulation
- */
+import type { FileType } from '../components/compression/FileTypeSelector';
 
-// Dictionary of common sequences (extended)
-const commonPatterns: Record<string, string> = {
-  "the": "†",
-  "and": "‡",
-  "ing": "§",
-  "ion": "¶",
-  "that": "©",
-  "have": "®",
-  "this": "™",
-  "with": "¥",
-  "from": "€",
-  "your": "£",
-  // Extended patterns
-  "tion": "∞",
-  "ment": "∆",
-  "able": "∑",
-  "ould": "∂",
-  "ight": "µ",
-  "there": "Ω",
-  "about": "≈",
-  "which": "√",
-};
+interface CompressionOptions {
+  fileType?: FileType;
+  algorithmParams?: string;
+}
 
-// Simulated ML pattern recognition
-const recognizePatterns = (text: string): string => {
-  // This function simulates ML pattern recognition
-  // In a real implementation, this would use actual ML models
-  let result = text;
+// Simulace základního kompresního algoritmu
+export function compressText(text: string, options: CompressionOptions = {}): { 
+  compressed: string; 
+  ratio: number; 
+  steps: Array<{name: string; before: string; after: string}>;
+} {
+  console.log("Compressing with options:", options);
   
-  // Find repeating word patterns (simulated transformer-like pattern matching)
-  const words = text.split(' ');
-  const wordFrequency: Record<string, number> = {};
-  
-  words.forEach(word => {
-    wordFrequency[word] = (wordFrequency[word] || 0) + 1;
-  });
-  
-  // Replace frequent words with special codes (simulation of neural compression)
-  Object.entries(wordFrequency)
-    .filter(([word, freq]) => freq > 3 && word.length > 3)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .forEach(([word], index) => {
-      // Use unicode characters starting from 0x2400 range as special codes
-      const specialChar = String.fromCharCode(0x2400 + index);
-      const regex = new RegExp(`\\b${word}\\b`, 'g');
-      result = result.replace(regex, specialChar);
-    });
-  
-  return result;
-};
-
-// Adaptive statistical modeling
-const adaptiveStatisticalModel = (text: string): string => {
-  // Simple implementation of adaptive statistical modeling
-  // In a real implementation, this would be much more sophisticated
-  const charFreq: Record<string, number> = {};
-  let total = 0;
-  
-  // Count character frequencies
-  for (const char of text) {
-    charFreq[char] = (charFreq[char] || 0) + 1;
-    total++;
-  }
-  
-  // Sort characters by frequency for huffman-like encoding
-  const sortedChars = Object.entries(charFreq)
-    .sort((a, b) => b[1] - a[1])
-    .map(([char]) => char);
-  
-  // Replace most frequent chars with shorter codes
-  // This is a simplified version of huffman coding
-  let result = text;
-  sortedChars.slice(0, 5).forEach((char, index) => {
-    const replacement = String.fromCharCode(0x2500 + index);
-    result = result.replace(new RegExp(char, 'g'), replacement);
-  });
-  
-  return result;
-};
-
-// Block-based processing (simulating parallel processing concepts)
-const processInBlocks = (text: string, blockSize: number, processor: (block: string) => string): string => {
-  // In a real implementation, this would process blocks in parallel
-  // For this demo, we're just simulating the concept
-  if (text.length <= blockSize) {
-    return processor(text);
-  }
-  
-  const blocks: string[] = [];
-  for (let i = 0; i < text.length; i += blockSize) {
-    const block = text.substring(i, Math.min(i + blockSize, text.length));
-    blocks.push(processor(block));
-  }
-  
-  return blocks.join('');
-};
-
-/**
- * Compress text using our advanced hybrid algorithm
- */
-export const compressText = (text: string): { compressed: string; ratio: number; steps: any[] } => {
-  if (!text) return { compressed: "", ratio: 0, steps: [] };
-  
+  // Začneme s kroky komprese
   const steps = [];
-  let workingText = text;
   
-  // Step 1: Dictionary substitution
-  steps.push({ name: "Dictionary substitution", before: workingText });
-  Object.entries(commonPatterns).forEach(([pattern, replacement]) => {
-    workingText = workingText.replace(new RegExp(pattern, 'g'), replacement);
-  });
-  steps.push({ name: "After dictionary substitution", after: workingText });
+  // Krok 1: Detekce opakujících se vzorců
+  const patternStep = {
+    name: "Pattern detection",
+    before: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
+    after: "Identified repeated patterns"
+  };
+  steps.push(patternStep);
   
-  // Step 2: Apply ML-inspired pattern recognition (simulation)
-  steps.push({ name: "ML pattern recognition", before: workingText });
-  workingText = recognizePatterns(workingText);
-  steps.push({ name: "After ML pattern recognition", after: workingText });
+  // Krok 2: Substituce
+  const substitutionStep = {
+    name: "Dictionary substitution",
+    before: "Original tokens",
+    after: "Substituted tokens"
+  };
+  steps.push(substitutionStep);
   
-  // Step 3: Apply run-length encoding for repeated characters
-  steps.push({ name: "Run-length encoding", before: workingText });
-  let rleResult = "";
-  let count = 1;
+  // Krok 3: Finalizace
+  const encoded = text
+    .split('')
+    .map(char => {
+      // Velmi jednoduchá "komprese" - nahradí mezery a některé znaky zkratkami
+      if (char === ' ') return '_';
+      if (char === 'a') return '@';
+      if (char === 'e') return '3';
+      if (char === 'i') return '1';
+      if (char === 'o') return '0';
+      return char;
+    })
+    .join('');
   
-  for (let i = 0; i < workingText.length; i++) {
-    if (workingText[i] === workingText[i + 1]) {
-      count++;
-    } else {
-      // Only encode if there are 3 or more repeated characters
-      if (count >= 3) {
-        rleResult += `${count}×${workingText[i]}`;
-      } else {
-        rleResult += workingText[i].repeat(count);
-      }
-      count = 1;
+  const finalStep = {
+    name: "Encoding",
+    before: "Prepared sequence",
+    after: encoded.substring(0, 50) + (encoded.length > 50 ? "..." : "")
+  };
+  steps.push(finalStep);
+  
+  // Aplikujeme specifické optimalizace podle typu souboru
+  let optimizedEncoded = encoded;
+  if (options.fileType) {
+    const fileTypeStep = {
+      name: `${options.fileType.charAt(0).toUpperCase() + options.fileType.slice(1)} optimization`,
+      before: encoded.substring(0, 30),
+      after: "Format-specific optimized"
+    };
+    steps.push(fileTypeStep);
+    
+    // Simulujme větší kompresi pro různé typy souborů
+    switch (options.fileType) {
+      case 'image':
+        optimizedEncoded = encoded.substring(0, Math.floor(encoded.length * 0.65));
+        break;
+      case 'video':
+        optimizedEncoded = encoded.substring(0, Math.floor(encoded.length * 0.55));
+        break;
+      case 'document':
+        optimizedEncoded = encoded.substring(0, Math.floor(encoded.length * 0.70));
+        break;
+      default:
+        optimizedEncoded = encoded.substring(0, Math.floor(encoded.length * 0.85));
     }
   }
   
-  workingText = rleResult;
-  steps.push({ name: "After run-length encoding", after: workingText });
+  // Pokud jsou zadány parametry algoritmu, aplikujeme další optimalizaci
+  if (options.algorithmParams?.length) {
+    const algoParamsStep = {
+      name: "Custom algorithm parameters",
+      before: optimizedEncoded.substring(0, 30),
+      after: `Applied parameters: ${options.algorithmParams.substring(0, 20)}`
+    };
+    steps.push(algoParamsStep);
+    
+    // Simulujeme vliv parametrů - čím delší parametry, tím lepší komprese
+    const paramFactor = Math.min(0.9, 0.5 + (options.algorithmParams.length / 100));
+    optimizedEncoded = optimizedEncoded.substring(0, Math.floor(optimizedEncoded.length * paramFactor));
+  }
   
-  // Step 4: Adaptive statistical modeling
-  steps.push({ name: "Adaptive statistical modeling", before: workingText });
-  workingText = processInBlocks(workingText, 500, adaptiveStatisticalModel);
-  steps.push({ name: "After adaptive modeling", after: workingText });
-  
-  // Step 5: Bit-level optimization (simulated for demonstration)
-  steps.push({ name: "Bit-level optimization", before: workingText });
-  // This step is simulated for the demo
-  const bitOptimized = workingText; 
-  steps.push({ name: "After bit-level optimization", after: bitOptimized });
-
-  // Calculate compression ratio
-  const originalSize = text.length;
-  const compressedSize = bitOptimized.length;
-  const ratio = originalSize > 0 ? ((originalSize - compressedSize) / originalSize) * 100 : 0;
+  // Výpočet kompresního poměru
+  const ratio = Math.round(((text.length - optimizedEncoded.length) / text.length) * 100);
   
   return {
-    compressed: bitOptimized,
-    ratio: parseFloat(ratio.toFixed(2)),
-    steps,
+    compressed: optimizedEncoded,
+    ratio,
+    steps
   };
-};
+}
 
-/**
- * Decompress text that was compressed with our algorithm
- */
-export const decompressText = (compressed: string): string => {
-  if (!compressed) return "";
+// Dekompresní funkce
+export function decompressText(compressed: string, options: CompressionOptions = {}): string {
+  console.log("Decompressing with options:", options);
   
-  let workingText = compressed;
-  
-  // Step 1: Undo bit-level optimization (simulated)
-  // In a real implementation, this would involve actual bit-level operations
-  
-  // Step 2: Undo adaptive statistical modeling
-  // Reverse the character replacements from 0x2500 range
-  for (let i = 0; i < 5; i++) {
-    const replacement = String.fromCharCode(0x2500 + i);
-    // This is a simplified reversal - in a real implementation,
-    // we would need to store the mapping and reverse it exactly
-  }
-  
-  // Step 3: Undo ML pattern recognition
-  // Reverse the special character mappings from 0x2400 range
-  for (let i = 0; i < 10; i++) {
-    const specialChar = String.fromCharCode(0x2400 + i);
-    // In a real implementation, we would store and retrieve the actual words
-  }
-  
-  // Step 4: Reverse run-length encoding
-  const rlePattern = /(\d+)×(.)/g;
-  workingText = workingText.replace(rlePattern, (_, count, char) => {
-    return char.repeat(parseInt(count, 10));
-  });
-  
-  // Step 5: Reverse dictionary substitution
-  const reversedPatterns: Record<string, string> = {};
-  Object.entries(commonPatterns).forEach(([pattern, replacement]) => {
-    reversedPatterns[replacement] = pattern;
-  });
-  
-  Object.entries(reversedPatterns).forEach(([special, original]) => {
-    workingText = workingText.replace(new RegExp(special, 'g'), original);
-  });
-  
-  return workingText;
-};
+  // Simulace dekomprese - pro demonstrační účely pouze obrátíme základní substituci
+  return compressed
+    .split('')
+    .map(char => {
+      if (char === '_') return ' ';
+      if (char === '@') return 'a';
+      if (char === '3') return 'e';
+      if (char === '1') return 'i';
+      if (char === '0') return 'o';
+      return char;
+    })
+    .join('');
+}

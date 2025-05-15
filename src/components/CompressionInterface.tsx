@@ -17,6 +17,7 @@ import HistoryExporter from './compression/HistoryExporter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserProfileManager from './compression/UserProfileManager';
 import { ChartLine, BarChart } from "lucide-react";
+import { FileType } from './compression/FileTypeSelector';
 
 const CompressionInterface: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -25,6 +26,8 @@ const CompressionInterface: React.FC = () => {
   const [useAI, setUseAI] = useState<boolean>(true);
   const [showInsights, setShowInsights] = useState<boolean>(true);
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
+  const [fileType, setFileType] = useState<FileType>('text');
+  const [algorithmInput, setAlgorithmInput] = useState<string>("");
   const [compressResult, setCompressResult] = useState<{
     ratio: number;
     steps: any[];
@@ -57,6 +60,8 @@ const CompressionInterface: React.FC = () => {
       if (useAI) {
         const result = aiCompressText(inputText, { 
           industry: selectedIndustry as any,
+          fileType: fileType,
+          algorithmParams: algorithmInput,
           learningEnabled: true,
           deepAnalysis: true
         });
@@ -67,13 +72,19 @@ const CompressionInterface: React.FC = () => {
           insights: result.insights 
         });
       } else {
-        const result = compressText(inputText);
+        const result = compressText(inputText, {
+          fileType: fileType,
+          algorithmParams: algorithmInput
+        });
         setOutputText(result.compressed);
         setCompressResult({ ratio: result.ratio, steps: result.steps });
       }
     } else {
       try {
-        const decompressed = decompressText(inputText);
+        const decompressed = decompressText(inputText, {
+          fileType: fileType,
+          algorithmParams: algorithmInput
+        });
         setOutputText(decompressed);
         // Reset visualization data in decompress mode
         setCompressResult({ ratio: 0, steps: [] });
@@ -82,10 +93,22 @@ const CompressionInterface: React.FC = () => {
         setOutputText("Error decompressing text");
       }
     }
-  }, [inputText, compressMode, useAI, selectedIndustry]);
+  }, [inputText, compressMode, useAI, selectedIndustry, fileType, algorithmInput]);
   
   const handleInputChange = (text: string) => {
     setInputText(text);
+  };
+  
+  const handleAlgorithmInputChange = (input: string) => {
+    setAlgorithmInput(input);
+  };
+  
+  const handleFileTypeChange = (type: FileType) => {
+    setFileType(type);
+    toast({
+      title: t('fileTypeChanged'),
+      description: `${t('selectedFileType')}: ${t(`fileTypes.${type}`)}`,
+    });
   };
   
   // Save to history
@@ -100,13 +123,15 @@ const CompressionInterface: React.FC = () => {
       compressedSize: compressMode ? outputText.length : inputText.length,
       ratio: compressResult.ratio,
       timestamp: Date.now(),
+      fileType: fileType,
+      algorithmInput: algorithmInput,
     };
     
     setHistory(prev => [...prev, record]);
     
     toast({
-      title: "Compression saved to history",
-      description: `Achieved ${compressResult.ratio}% compression ratio`,
+      title: t('compressionSavedToHistory'),
+      description: `${t('achieved')} ${compressResult.ratio}% ${t('compressionRatio')}`,
     });
   };
   
@@ -120,14 +145,23 @@ const CompressionInterface: React.FC = () => {
       setOutputText(record.originalText);
     }
     
+    // Nastavíme uložený typ souboru a vstup algoritmu, pokud existují
+    if (record.fileType) {
+      setFileType(record.fileType);
+    }
+    
+    if (record.algorithmInput) {
+      setAlgorithmInput(record.algorithmInput);
+    }
+    
     setCompressResult({
       ratio: record.ratio,
       steps: [], // Steps aren't stored in history for simplicity
     });
     
     toast({
-      title: "Loaded from history",
-      description: "Text loaded from history record",
+      title: t('loadedFromHistory'),
+      description: t('textLoadedFromHistory'),
     });
   };
   
@@ -143,8 +177,8 @@ const CompressionInterface: React.FC = () => {
   const handleSelectIndustry = (industry: string | null) => {
     setSelectedIndustry(industry);
     toast({
-      title: industry ? `${industry} profile activated` : "General profile activated",
-      description: industry ? "Compression optimized for your industry" : "Using general compression",
+      title: industry ? `${t(industry)} ${t('profileActivated')}` : t('generalProfileActivated'),
+      description: industry ? t('compressionOptimizedForIndustry') : t('usingGeneralCompression'),
     });
   };
   
@@ -156,8 +190,8 @@ const CompressionInterface: React.FC = () => {
   // Handle custom profile selection
   const handleSelectProfile = (profile: any) => {
     toast({
-      title: `${profile.name} profile selected`,
-      description: `Using custom compression profile with ${Object.keys(profile.patterns).length} patterns`,
+      title: `${profile.name} ${t('profileSelected')}`,
+      description: `${t('usingCustomProfile')} ${Object.keys(profile.patterns).length} ${t('patterns')}`,
     });
   };
   
@@ -205,11 +239,15 @@ const CompressionInterface: React.FC = () => {
             inputText={inputText}
             outputText={outputText}
             compressMode={compressMode}
+            fileType={fileType}
+            algorithmInput={algorithmInput}
             history={history}
             onInputChange={handleInputChange}
             onToggleMode={toggleMode}
             onSave={saveToHistory}
             onSelectFromHistory={loadFromHistory}
+            onFileTypeChange={handleFileTypeChange}
+            onAlgorithmInputChange={handleAlgorithmInputChange}
           />
           
           {useAI && (
@@ -233,11 +271,11 @@ const CompressionInterface: React.FC = () => {
               <TabsList className="mb-2">
                 <TabsTrigger value="basic" className="flex items-center gap-1">
                   <BarChart className="h-3 w-3" />
-                  Basic
+                  {t('basic')}
                 </TabsTrigger>
                 <TabsTrigger value="extended" className="flex items-center gap-1">
                   <ChartLine className="h-3 w-3" />
-                  Extended
+                  {t('extended')}
                 </TabsTrigger>
               </TabsList>
             </Tabs>
