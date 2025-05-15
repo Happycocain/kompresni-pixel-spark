@@ -145,7 +145,7 @@ const CompressionInterface: React.FC = () => {
       setOutputText(record.originalText);
     }
     
-    // Nastavíme uložený typ souboru a vstup algoritmu, pokud existují
+    // Set saved file type and algorithm input if they exist
     if (record.fileType) {
       setFileType(record.fileType);
     }
@@ -176,10 +176,17 @@ const CompressionInterface: React.FC = () => {
   // Select industry profile
   const handleSelectIndustry = (industry: string | null) => {
     setSelectedIndustry(industry);
-    toast({
-      title: industry ? `${t(industry)} ${t('profileActivated')}` : t('generalProfileActivated'),
-      description: industry ? t('compressionOptimizedForIndustry') : t('usingGeneralCompression'),
-    });
+    if (industry) {
+      toast({
+        title: `${t(industry as any)} ${t('profileActivated')}`,
+        description: t('compressionOptimizedForIndustry'),
+      });
+    } else {
+      toast({
+        title: t('generalProfileActivated'),
+        description: t('usingGeneralCompression'),
+      });
+    }
   };
   
   // Import history
@@ -196,7 +203,7 @@ const CompressionInterface: React.FC = () => {
   };
   
   return (
-    <div className="container mx-auto space-y-6 py-6">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <CompressionHeader />
         <div className="flex items-center space-x-4">
@@ -207,18 +214,18 @@ const CompressionInterface: React.FC = () => {
               onCheckedChange={setUseAI}
             />
             <Label htmlFor="ai-mode" className="cursor-pointer flex items-center gap-1">
-              <span className={useAI ? "text-purple-400" : "text-gray-400"}>{t('aiCompression')}</span>
+              <span className={useAI ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}>{t('aiCompression')}</span>
               {useAI && (
-                <span className="bg-purple-500/20 text-purple-200 text-xs px-1.5 py-0.5 rounded">PRO</span>
+                <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs px-1.5 py-0.5 rounded">PRO</span>
               )}
             </Label>
           </div>
           
           {useAI && selectedIndustry && (
-            <span className="bg-purple-700/30 border border-purple-500/30 text-purple-300 text-xs px-2 py-1 rounded-full flex items-center">
+            <span className="bg-blue-100 border border-blue-200 text-blue-800 dark:bg-blue-900/30 dark:border-blue-700/30 dark:text-blue-300 text-xs px-2 py-1 rounded-full flex items-center">
               {selectedIndustry.charAt(0).toUpperCase() + selectedIndustry.slice(1)} {t('profile')}
               <button 
-                className="ml-2 text-purple-400 hover:text-purple-200"
+                className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
                 onClick={() => handleSelectIndustry(null)}
               >
                 ×
@@ -304,20 +311,20 @@ const CompressionInterface: React.FC = () => {
           )}
           
           {useAI && (
-            <div className="mt-4">
+            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
               <div className="text-sm font-medium mb-2">{t('selectIndustryProfile')}:</div>
               <div className="grid grid-cols-2 gap-2">
                 {["medical", "finance", "tech", "legal"].map((industry) => (
                   <button
                     key={industry}
-                    className={`p-2 text-xs rounded border ${
+                    className={`p-2 text-xs rounded-md border ${
                       selectedIndustry === industry
-                        ? "bg-purple-700 border-purple-500 text-white"
-                        : "bg-white/10 border-white/20 hover:bg-white/20"
+                        ? "bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200"
+                        : "bg-white border-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                     }`}
                     onClick={() => handleSelectIndustry(industry)}
                   >
-                    {t(industry)}
+                    {t(industry as any)}
                   </button>
                 ))}
               </div>

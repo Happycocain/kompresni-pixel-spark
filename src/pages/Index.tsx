@@ -9,7 +9,7 @@ import IndustrySpecificProfiles from '@/components/compression/IndustrySpecificP
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from 'react-router-dom';
-import { Code, Building, Brain, Sparkles, Gauge, Trophy } from 'lucide-react';
+import { Code, Building, Brain, Sparkles, Gauge, Trophy, Zap } from 'lucide-react';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTranslation } from '@/i18n/translations';
 import SettingsPanel from '@/components/app/SettingsPanel';
@@ -38,22 +38,25 @@ const Index = () => {
   
   // Handle profile selection
   const handleSelectProfile = (profile: any) => {
-    console.log("Vybrán profil:", profile);
+    console.log("Selected profile:", profile);
   };
   
   // Handle industry profile selection
   const handleSelectIndustryProfile = (profileId: string) => {
-    console.log("Vybrán oborový profil:", profileId);
+    console.log("Selected industry profile:", profileId);
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white dark:from-slate-950 dark:via-purple-950 dark:to-slate-950">
-      <header className="border-b border-white/10">
+    <div className="min-h-screen bg-white text-gray-800 dark:bg-slate-900 dark:text-white">
+      <header className="border-b border-gray-200 dark:border-gray-800">
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold">{t('appName')}</h1>
-              <Badge variant="outline" className="ml-2 bg-purple-500 border-none px-2 py-0.5 text-xs">{t('edition')}</Badge>
+              <span className="text-blue-600 dark:text-blue-400 mr-2">
+                <Zap className="h-6 w-6" />
+              </span>
+              <h1 className="text-2xl font-bold">Compressify</h1>
+              <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-700 border-none dark:bg-blue-900 dark:text-blue-200 px-2 py-0.5 text-xs">{t('edition')}</Badge>
             </div>
           </div>
           <div className="flex space-x-4 items-center">
@@ -65,7 +68,7 @@ const Index = () => {
                 {t('apiDocs')}
               </Link>
             </Button>
-            <Button asChild variant="secondary">
+            <Button asChild variant="default" className="bg-blue-600 hover:bg-blue-700">
               <Link to="/enterprise">
                 <Building className="h-4 w-4 mr-2" />
                 {t('enterpriseSolution')}
@@ -75,43 +78,43 @@ const Index = () => {
         </div>
       </header>
       
-      <div className="bg-gradient-to-r from-purple-800/30 to-blue-900/30 py-8 border-b border-white/10">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16 dark:from-blue-900/20 dark:to-indigo-900/20 dark:border-gray-800 border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-2/3 mb-6 md:mb-0 md:pr-8">
-              <Badge className="mb-2 bg-purple-600/80">{t('newFeature')}</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <Badge className="mb-2 bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-800">{t('newFeature')}</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
                 {t('aiHeadline')}
               </h2>
-              <p className="text-lg text-gray-300 mb-6">
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
                 {t('aiDescription')}
               </p>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2">
-                  <Brain className="text-purple-400 h-5 w-5" />
+              <div className="grid grid-cols-2 gap-4 max-w-lg">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <Brain className="text-blue-600 dark:text-blue-400 h-5 w-5" />
                   <span>{t('features.adaptiveAlgorithms')}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Sparkles className="text-purple-400 h-5 w-5" />
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <Sparkles className="text-blue-600 dark:text-blue-400 h-5 w-5" />
                   <span>{t('features.maxEfficiency')}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Gauge className="text-purple-400 h-5 w-5" />
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <Gauge className="text-blue-600 dark:text-blue-400 h-5 w-5" />
                   <span>{t('features.advancedAnalysis')}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Trophy className="text-purple-400 h-5 w-5" />
+                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <Trophy className="text-blue-600 dark:text-blue-400 h-5 w-5" />
                   <span>{t('features.worldClass')}</span>
                 </div>
               </div>
             </div>
             <div className="md:w-1/3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="bg-white shadow-lg rounded-xl p-6 dark:bg-slate-800 dark:border dark:border-slate-700">
                 <h3 className="font-medium text-lg mb-2">{t('tryDifference')}</h3>
-                <p className="text-sm text-gray-300 mb-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                   {t('tryDifferenceDesc')}
                 </p>
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" onClick={() => setActiveTab("compression")}>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => setActiveTab("compression")}>
                   {t('tryCompressionTool')}
                 </Button>
               </div>
@@ -120,37 +123,37 @@ const Index = () => {
         </div>
       </div>
       
-      <div className="container mx-auto py-8 px-4">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full max-w-4xl mx-auto">
-            <TabsTrigger value="compression">{t('tabs.compression')}</TabsTrigger>
-            <TabsTrigger value="batch">{t('tabs.batch')}</TabsTrigger>
-            <TabsTrigger value="profiles">{t('tabs.profiles')}</TabsTrigger>
-            <TabsTrigger value="industry">{t('tabs.industry')}</TabsTrigger>
-            <TabsTrigger value="analytics">{t('tabs.analytics')}</TabsTrigger>
+      <div className="container mx-auto py-12 px-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid grid-cols-2 md:flex md:w-auto gap-1 p-1 md:justify-center mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg">
+            <TabsTrigger value="compression" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">{t('tabs.compression')}</TabsTrigger>
+            <TabsTrigger value="batch" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">{t('tabs.batch')}</TabsTrigger>
+            <TabsTrigger value="profiles" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">{t('tabs.profiles')}</TabsTrigger>
+            <TabsTrigger value="industry" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">{t('tabs.industry')}</TabsTrigger>
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">{t('tabs.analytics')}</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="compression" className="space-y-6">
+          <TabsContent value="compression" className="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <CompressionInterface />
           </TabsContent>
           
-          <TabsContent value="batch" className="space-y-6">
+          <TabsContent value="batch" className="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <BatchCompression />
           </TabsContent>
           
-          <TabsContent value="profiles" className="space-y-6">
+          <TabsContent value="profiles" className="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <CompressionProfiles onSelectProfile={handleSelectProfile} />
           </TabsContent>
           
-          <TabsContent value="industry" className="space-y-6">
+          <TabsContent value="industry" className="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <IndustrySpecificProfiles onSelectProfile={handleSelectIndustryProfile} />
           </TabsContent>
           
-          <TabsContent value="analytics" className="space-y-6">
+          <TabsContent value="analytics" className="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="mb-4">
-              <h2 className="text-xl font-bold mb-2">Pokročilé analýzy komprese</h2>
-              <p className="text-gray-300">
-                Prozkoumejte detailní metriky a výkonnostní charakteristiky kompresních algoritmů.
+              <h2 className="text-xl font-bold mb-2">Advanced Compression Analytics</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Explore detailed metrics and performance characteristics of compression algorithms.
               </p>
             </div>
             
@@ -159,11 +162,11 @@ const Index = () => {
               compressedSize={1200}
               ratio={40}
               steps={[
-                { name: "Detekce formátu", before: "Vstupní text", after: "Rozpoznán formát" },
-                { name: "Slovníková substituce", before: "Původní text", after: "Text po substituci" },
-                { name: "ML rozpoznávání vzorů", before: "Text se substituovanými slovy", after: "Text s rozpoznanými vzory" },
-                { name: "RLE kódování", before: "RLE kódovaný text", after: "Text s rozpoznanými vzory" },
-                { name: "Statistické modelování", before: "Statisticky optimalizovaný text", after: "RLE kódovaný text" }
+                { name: "Format Detection", before: "Input text", after: "Format recognized" },
+                { name: "Dictionary Substitution", before: "Original text", after: "Text after substitution" },
+                { name: "ML Pattern Recognition", before: "Text with substituted words", after: "Text with recognized patterns" },
+                { name: "RLE Encoding", before: "RLE encoded text", after: "Text with recognized patterns" },
+                { name: "Statistical Modeling", before: "Statistically optimized text", after: "RLE encoded text" }
               ]}
               history={demoHistory}
             />
@@ -171,20 +174,23 @@ const Index = () => {
         </Tabs>
       </div>
       
-      <footer className="bg-black/30 border-t border-white/10 py-6 mt-12">
+      <footer className="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8 mt-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <span className="font-semibold text-lg">{t('appName')}</span>
-              <Badge variant="outline" className="ml-2">2025</Badge>
+              <span className="text-blue-600 dark:text-blue-400 mr-2">
+                <Zap className="h-5 w-5" />
+              </span>
+              <span className="font-semibold text-lg">Compressify</span>
+              <Badge variant="outline" className="ml-2 text-xs">2025</Badge>
             </div>
             <div className="flex gap-6">
-              <Link to="/api" className="text-gray-300 hover:text-white">API</Link>
-              <Link to="/enterprise" className="text-gray-300 hover:text-white">Enterprise</Link>
-              <a href="#" className="text-gray-300 hover:text-white">GitHub</a>
+              <Link to="/api" className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">API</Link>
+              <Link to="/enterprise" className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">Enterprise</Link>
+              <a href="#" className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">GitHub</a>
             </div>
           </div>
-          <div className="border-t border-white/10 mt-4 pt-4 text-center text-sm text-gray-400">
+          <div className="border-t border-gray-200 dark:border-gray-800 mt-4 pt-4 text-center text-sm text-gray-500 dark:text-gray-400">
             {t('footer.rights')}
           </div>
         </div>
